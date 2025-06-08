@@ -1,0 +1,63 @@
+body {
+  @apply font-primary text-text bg-background
+}
+.dark body {
+
+  @apply bg-slate-950 bg-[url(/images/bg.svg)] bg-cover bg-repeat;
+}
+
+h1 {
+  @apply font-primary font-bold text-4xl lg:text-5xl
+}
+
+h2 {
+  @apply font-primary font-bold text-3xl lg:text-4xl
+}
+
+h3 {
+  @apply font-primary font-bold text-2xl lg:text-3xl
+}
+
+h4 {
+  @apply font-primary font-bold text-xl lg:text-2xl
+}
+
+h5 {
+  @apply font-primary font-bold text-lg lg:text-xl
+}
+
+p {
+  @apply font-primary text-text text-base lg:text-lg
+}
+
+pre {
+  @apply rounded p-4
+}
+
+/* Sombra más acentuada y transiciones más suaves */
+img {
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4); /* Sombra más notoria */
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; /* Transiciones más suaves */
+  transform: scale(0.96); /* Apenas más pequeño de inicio */
+  animation: float 3s ease-in-out infinite; /* Movimiento más lento */
+}
+
+/* Efecto hover con más suavidad y sombra más acentuada */
+img:hover {
+  transform: scale(1.02); /* Crece un poquito más al pasar el mouse */
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.7); /* Sombra más profunda y difusa */
+}
+
+/* Animación con menos desplazamiento */
+@keyframes float {
+  0% {
+    transform: translateY(0) scale(0.96);
+  }
+  50% {
+    transform: translateY(-5px) scale(0.98); /* Sube solo 5px y crece un poquito */
+  }
+  100% {
+    transform: translateY(0) scale(0.96);
+  }
+}

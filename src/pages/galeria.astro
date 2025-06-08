@@ -1,0 +1,149 @@
+---
+import Base from "@/layouts/Base.astro";
+import theme from "@/config/theme.json";
+import "@/styles/gallery.scss";
+
+
+const { colors: themeColors } = theme;
+
+const transparencies = [
+  "/10",
+  "/20",
+  "/30",
+  "/40",
+  "/50",
+  "/60",
+  "/70",
+  "/80",
+  "/90",
+  "",
+].reverse();
+
+
+---
+
+<Base>
+  <section class="video-container">
+    <img
+      class="side-image hidden dark:block"
+      src="./images/n_logo_blanco_original.png"
+      alt="maquina de tatuar"
+      loading="lazy"
+    />
+    <img
+      class="side-image block dark:hidden"
+      src="./images/logo.png"
+      alt="maquina de tatuar"
+      loading="lazy"
+    />
+    <video id="videoTattoo" width="400px" height="600px" controls>
+      <source src="./images/videotattoo.mp4" type="video/mp4" />
+      Tu navegador no soporta la reproducción de videos.
+    </video>
+  </section>
+  <br /><br />
+  <h1 class="galeria-text" style="text-align: center;">Galería</h1>
+  
+  <div class="flex items-center gap-x-4 mt-4">
+    <button type="button" class="agregar-imagen ml-4 btn btn-primary rounded-pill px-4 py-2 me-2">
+  Agregar imagen
+</button>
+     <button id="btnToggleDeleteMode" type="button" class="btn btn-danger rounded-pill px-4 py-2">
+  Eliminar imagen
+</button>
+
+<button id="btnConfirmDelete" type="button" class="btn btn-danger rounded-pill px-4 py-2" style="display: none; margin-left: 10px;">
+  Confirmar eliminación
+</button>
+  </div>
+  <br /><br />
+<section id="galeria" class="galeria">
+  
+</section>
+
+  <!-- Modal de imagen ampliada -->
+  <div
+    id="imageModal"
+    class="hidden fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center"
+  >
+    <button id="prevImage" class="nav-arrow left-4" style="color: white">❮</button>
+    <div class="relative">
+      <button
+        id="closeModal"
+        class="absolute top-2 right-2 bg-gray-200 text-black rounded-full px-3 py-1"
+      >X</button>
+      <img
+        id="modalImage"
+        class="max-w-[90vw] max-h-[90vh] rounded-lg"
+        src=""
+        alt="Imagen ampliada"
+      />
+    </div>
+    <button id="nextImage" class="nav-arrow right-4" style="color: white">❯</button>
+  </div>
+ <!-- Modal para Agregar Imagen -->
+<div id="addImageModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm min-h-screen text-left">
+  <div class="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-lg sm:w-3/4 md:w-1/2">
+    <form id="addImageForm" class="space-y-4" enctype="multipart/form-data">
+      <h3 class="text-lg font-medium text-gray-800 dark:text-white">Agregar Imagen</h3>
+
+      <div class="grid grid-cols-1 gap-6">
+        <!-- Título de la Imagen -->
+        <div>
+          <label for="image_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Título</label>
+          <input
+            type="text"
+            id="image_title"
+            name="image_title"
+            class="mt-1 block w-full px-4 py-2 leading-snug border border-gray-300 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            required
+          />
+        </div>
+
+        <!-- Descripción (opcional) -->
+        <div>
+          <label for="image_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+          <textarea
+            id="image_description"
+            name="image_description"
+            rows="3"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            placeholder="Describe brevemente la imagen (opcional)"
+          ></textarea>
+        </div>
+
+        <!-- Subir Imagen -->
+        <div>
+          <label for="image_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Seleccionar Imagen</label>
+          <input
+            type="file"
+            id="image_file"
+            name="image_file"
+            accept="image/*"
+            class="mt-1 block w-full text-sm text-gray-700 dark:text-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-800"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="mt-4 flex justify-center w-full gap-4">
+        <button
+          type="submit"
+          class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-white font-semibold bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Subir Imagen
+        </button>
+        <button
+          type="button"
+          id="cancelAddImage"
+          class="inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+   <script type="module" src="/scripts/views/gallery.js"></script>
+</Base>

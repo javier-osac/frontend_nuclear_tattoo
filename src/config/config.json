@@ -1,0 +1,30 @@
+{
+  "site": {
+    "title": "Nuclear Tattoo",
+    "base_url": "https://astro-starter.alfadev.io",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.ico",
+    "logo": "/images/logo.png",
+    "logo_width": "47",
+    "logo_height": "47",
+    "logo_text": "Nuclear Tattoo"
+  },
+
+  "params": {
+    "footer_description": "Nuclear Tattoo!",
+    "email": "nuclear.tattoostudio@gmail.com",
+    "location": "Ibagué - Colombia, pero podemos estar donde tú quieras!",
+    "phone": "+57 3209767744",
+    "contact_form_action": "#",
+    "copyright": "Copyright © 2025"
+},
+
+  "metadata": {
+    "meta_author": "alfadev",
+    "meta_image": "/images/logo.png",
+    "meta_description": "alfadev-astro-starter is a starter template for Astro, the modern static site generator for the modern web.",
+    "meta_keywords": ["astro", "Astro Starter", "alfadev", "Diego Alfaro Sáez", "static site generator", "modern web", "astro template"],
+    "meta_application_name": "alfadev-astro-starter"
+  }
+}

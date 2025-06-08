@@ -1,0 +1,86 @@
+{
+  "main": [
+    {
+      "name": "Inicio",
+      "url": "/"
+    },
+    {
+      "name": "Galeria",
+      "url": "/galeria"
+    },
+    {
+      "name": "Contacto",
+      "url": "/contact"
+    },
+    {
+      "name": "Sobre Nosotros",
+      "url": "/nosotros"
+    },
+    {
+      "name": "Pages",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Changelog",
+          "url": "/changelog"
+        },
+        {
+          "name": "Does not exist",
+          "url": "/does-not-exist"
+        },
+
+        {
+          "name": "Neither does this",
+          "url": "/neither-does-this"
+        },
+        {
+          "name": "Nope, not this one either",
+          "url": "/nope-not-this-one-either"
+        },
+        {
+          "name": "What about this?",
+          "url": "/what-about-this"
+        },
+        {
+          "name": "Come on, this one must exist",
+          "url": "/come-on-this-one-must-exist"
+        },
+        {
+          "name": "Do you expect this to exist?",
+          "url": "/do-you-expect-this-to-exist"
+        }
+      ]
+    }
+  ],
+
+  "dashboard": [
+    {
+      "name": "Agendamiento",
+      "url": "/appointments"
+    },
+    {
+      "name": "Balance",
+      "url": "/transactions"
+    },
+    {
+      "name": "Comentarios",
+      "url": "/comments"
+    },
+    {
+      "name": "Mod. Galería",
+      "url": "/modgaleria"
+    }
+  ],
+
+  "footer": [
+    {
+      "name": "Contacto",
+      "url": "/contact"
+    },
+    {
+      "name": "Galeria",
+      "url": "/galeria"
+    }
+  ]
+}

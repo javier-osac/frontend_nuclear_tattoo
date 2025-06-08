@@ -1,0 +1,224 @@
+---
+import PageHeader from "@/components/core/PageHeader.astro";
+import Base from "@/layouts/Base.astro";
+import { getEntry } from "astro:content";
+import "@/styles/login_register.scss";
+
+const features = await getEntry("features", "index");
+const { Content } = await features.render();
+---
+
+<Base>
+<div id="container">
+<!--formulario de inicio de sesion -->
+  <div class="form-login">
+      <form action="#">
+      
+        <h2>Iniciar Sesion</h2>
+
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="mail-outline"></ion-icon>
+          </span>
+          <input type="email" required="required" />
+          <label>Correo Electrónico</label>
+          <div class="input-line"></div>
+        </div>
+
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+          </span>
+          <input type="password" required="required" />
+          <label>Contraseña</label>
+          <div class="input-line"></div>
+        </div>
+
+        <div class="remember-forgot">
+          <label>
+            <input type="checkbox" /> Recordar
+          </label>
+          <a href="#">¿Has olvidado tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="button-init">Iniciar Sesión</button>
+
+        <div class="login-register">
+          <p>¿No tienes una cuenta?</p>
+          <a href="#"
+          class="register-link">Registro</a>  
+        </div>
+      </form>
+  </div>
+
+<!--formulario de registro -->
+  <div class="form-register">
+    <form action="#">
+    
+      <h2>Registro</h2>
+      <div class="input-box">
+        <span class="icon">
+          <ion-icon name="people-outline"></ion-icon>
+        </span>
+        <input type="text" required="required" />
+        <label>Nombre de Usuario</label>
+        <div class="input-line"></div>
+      </div>
+
+      <div class="input-box">
+        <span class="icon">
+          <ion-icon name="mail-outline"></ion-icon>
+        </span>
+        <input type="email" required="required" />
+        <label>Correo Electrónico</label>
+        <div class="input-line"></div>
+      </div>
+
+      <div class="input-box">
+        <span class="icon">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+        </span>
+        <input type="password" required="required" />
+        <label>Contraseña</label>
+        <div class="input-line"></div>
+      </div>
+      <div class="input-box">
+        <span class="icon">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+        </span>
+        <input type="password" required="required" />
+        <label>Confirmar contraseña</label>
+        <div class="input-line"></div>
+      </div>
+
+      <div class="remember-forgot">
+        <label>
+          <input type="checkbox" required="required"/> Agregar terminos y condiciones
+        </label>
+      </div>
+      <button type="submit" class="button-init">Registrarse</button>
+      <div class="login-register">
+        <p>¿Ya tienes una cuenta?</p>
+        <a href="#"
+        class="login-link">Login</a>  
+      </div>
+    </form>
+  </div>
+
+<!--formulario de recuperacion -->
+  <div class="form-forgot">
+    <form action="#">
+      <h2>¿Olvidaste tu contraseña?</h2>
+    
+      <div class="input-box">
+        <span class="icon">
+          <ion-icon name="mail-outline"></ion-icon>
+        </span>
+        <input type="email" required="required" />
+        <label>Correo Electrónico</label>
+        <div class="input-line"></div>
+      </div>
+    
+      <p class="forgot-info">
+        Ingresa tu correo electrónico y te enviaremos un enlace para restablecerla.
+      </p>
+    
+      <button type="submit" class="button-init">Enviar</button>
+    
+      <div class="login-register">
+        <p>¿Ya la recordaste?</p>
+        <a href="#" class="back-login-link">Volver al Login</a>
+      </div>
+      
+    </form>
+    
+  </div>
+</div>
+  
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector("#container");
+    const loginForm = document.querySelector(".form-login");
+    const registerForm = document.querySelector(".form-register");
+    const forgotForm = document.querySelector(".form-forgot");
+
+    const loginLinks = document.querySelectorAll(".login-link");
+    const registerLink = document.querySelector(".register-link");
+    const forgotLink = document.querySelector(".remember-forgot a");
+    const backToLoginLink = document.querySelector(".back-login-link");
+
+  function showForm(form) {
+  container.classList.remove("show-login", "show-register", "show-forgot");
+  container.classList.add(`show-${form}`);
+
+  requestAnimationFrame(() => {
+    const height = {
+      login: loginForm.offsetHeight,
+      register: registerForm.offsetHeight,
+      forgot: forgotForm.offsetHeight,
+    }[form];
+    container.style.height = `${height}px`;
+  });
+
+  localStorage.setItem("formState", form);
+}
+
+
+  // Listeners
+  registerLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showForm("register");
+  });
+
+  loginLinks?.forEach(link =>
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      showForm("login");
+    })
+  );
+
+  forgotLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showForm("forgot");
+  });
+
+  backToLoginLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showForm("login");
+  });
+
+  // Cargar estado guardado
+  showForm("login");
+
+
+//script para que el label se mantenga arriba sin necesidad de que se valide
+
+});
+
+document.querySelectorAll('.input-box input').forEach(input => {
+    // Al cargar la página, por si ya hay texto
+    if (input.value.trim() !== '') {
+      input.classList.add('has-content');
+    }
+
+    input.addEventListener('input', () => {
+      if (input.value.trim() !== '') {
+        input.classList.add('has-content');
+      } else {
+        input.classList.remove('has-content');
+      }
+    });
+  });
+
+//ruta para que el submit me devuelva al login delk form  
+  document.querySelectorAll("form").forEach(form => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); // Previene el envío real
+    // Redirigir a la página de login (ajusta la ruta si es diferente)
+    window.location.href = "/login_register"; // o la ruta que tengas para login
+  });
+});
+</script>
+</Base>

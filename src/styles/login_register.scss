@@ -1,0 +1,514 @@
+body {
+    background-image: url('/images/112.jpg');
+    /* Cambia por la ruta de tu imagen */
+    background-size: cover;
+    /* Ajusta la imagen para cubrir toda la pantalla */
+    background-position: center;
+    /* Centra la imagen */
+    background-repeat: no-repeat;
+    /* Evita que la imagen se repita */
+
+}
+
+/* Modo oscuro */
+.dark body {
+    background-image: url('/images/113.png');
+    /* Imagen para modo oscuro */
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centra el contenido verticalmente */
+    align-items: center;
+    /* Centra horizontalmente */
+
+    min-height: 100vh;
+    /* Ocupa toda la altura de la pantalla */
+    padding: 20px;
+}
+
+
+:root {
+    /* font sizes */
+    --h2-font-size: 2em;
+    --small-font-size: 1em;
+    --medium-font-size: 1.2em;
+    --smaller-font-size: 0.9em;
+    --form-bg-light: rgba(216, 216, 228, 0.194);
+    /* Azul clarito */
+    --form-bg-dark: rgba(40, 40, 40, 0.9);
+    /* Gris oscuro */
+    --input-line: black;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+#container {
+    background: linear-gradient(0deg, rgba(68, 68, 189, 0.605) 11%, rgba(0, 195, 255, 0.491) 70%);
+    /* Por defecto usa el color del modo claro */
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.324);
+    width: 352px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    transition: height 1s ease;
+    overflow: hidden;
+    // se agrega mas estilos 
+    align-items: flex-start;
+
+}
+
+#container.show-login .form-login {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+    pointer-events: auto;
+}
+
+// Mostrar el registro
+#container.show-register .form-register {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+    pointer-events: auto;
+}
+
+// Mostrar el formulario "olvidé mi contraseña"
+#container.show-forgot .form-forgot {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+    pointer-events: auto;
+}
+
+.form-login,
+.form-register,
+.form-forgot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease, opacity 0.3s ease;
+    z-index: 0;
+    padding: 18px 20px 35px;
+
+}
+
+.forgot-info {
+    color: #000000;
+    transition: color 0.3s ease;
+    font-family: 'Poppins', sans-serif; // por si no lo habías definido aún
+}
+
+
+
+.dark .forgot-info {
+    color: #ffffff;
+}
+
+.back-login-link {
+    position: relative;
+    display: inline-block;
+    color: #e1ecf9; // color del texto
+    text-decoration: none;
+    margin-top: 10px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 2px;
+        background-color: #004793;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+// En modo oscuro
+.dark .back-login-link::after {
+    background-color: #ffffff;
+}
+
+.back-login-link {
+    position: relative;
+    display: inline-block;
+    color: #000000a8; // color del texto
+    text-decoration: none;
+    margin-top: 10px;
+
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 2px;
+        background-color: #f4f8fc;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+// En modo oscuro
+.dark .back-login-link::after {
+    background-color: #ffffff;
+}
+
+.dark .back-login-link {
+    color: #ffffff; // cambia el color del texto en modo dark
+
+    &::after {
+        background-color: #ff8000; // también cambia el subrayado
+    }
+}
+
+
+
+h2 {
+    font-size: var(--h2-font-size);
+    color: var(--white-color);
+    text-align: center;
+    transition: 0.5s ease;
+}
+
+.input-check:checked~h2 {
+    color: var(--light-bacco);
+    text-shadow:
+        0 0 15px var(--light-bacco),
+        0 0 30px var(--light-bacco);
+}
+
+.input-box {
+    position: relative;
+    width: 310px;
+    margin: 30px 0;
+    outline: none;
+    /* Elimina el borde azul */
+    box-shadow: none;
+    /* Asegura que no haya sombra */
+    margin-bottom: 20px;
+}
+
+/* Modo Light (por defecto) */
+.input-box .input-line {
+    position: absolute;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+    height: 2.5px;
+    background: #004793;
+    /* Azul en modo claro */
+    transition: 0.5s ease;
+}
+
+/* Modo Dark */
+.dark .input-box .input-line {
+    background: #ffffff;
+    /* Naranja en modo oscuro */
+    box-shadow: 0 0 10px rgba(255, 87, 51, 0.7);
+}
+
+/* Cuando el input está enfocado */
+.input-box input:focus~.input-line {
+    background: #ffffff;
+    /* Azul más fuerte en modo claro */
+}
+
+.dark .input-box input:focus~.input-line {
+    background: #ff8103;
+    /* Rojo oscuro en modo oscuro */
+    box-shadow: 0 0 10px rgba(204, 70, 38, 0.7);
+}
+
+
+.input-check:checked~.input-box .input-line {
+    background: var(--light-bacco);
+    box-shadow: 0 0 10px var(--light-bacco);
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: var(--small-font-size);
+    pointer-events: none;
+    color: var(--white-color);
+    transition: 0.5s ease;
+}
+
+
+.input-box input:focus~label,
+.input-box input.has-content~label {
+    top: -5px;
+}
+
+.input-check:checked~.input-box label {
+    color: var(--light-bacco);
+    text-shadow: 0 0 10px var(--light-bacco);
+}
+
+.input-box input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: var(--small-font-size);
+    color: var(--white-color);
+    padding: 0 35px 0 5px;
+    transition: 0.5s ease;
+
+}
+
+
+.input-box input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.input-check:checked~.input-box input {
+    color: var(--light-bacco);
+    text-shadow: 0 0 5px var(--light-bacco);
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 8px;
+    color: var(--white-color);
+    font-size: var(--medium-font-size);
+    line-height: 57px;
+    transition: 0.5s;
+}
+
+.input-check:checked~.input-box .icon {
+    color: var(--light-bacco);
+    filter: drop-shadow(0 0 5px var(--light-bacco));
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    color: var(--white-color);
+    font-size: var(--smaller-font-size);
+    margin: -15px 0 15px;
+    transition: 0.5s ease;
+    width: 100%;
+}
+
+.input-check:checked~.remember-forgot {
+    color: var(--light-bacco);
+    text-shadow: 0 0 10px var(--light-bacco);
+}
+
+.remember-forgot label input {
+    accent-color: var(--white-color);
+    margin-right: 3px;
+    transition: 0.5s ease;
+}
+
+.input-check:checked~.remember-forgot label input {
+    accent-color: var(--light-bacco);
+}
+
+/* Estilo con subrayado animado para el enlace */
+.remember-forgot a {
+    position: relative;
+    color: #000000a8; // color claro base
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 2px;
+        background-color: #f4f8fc;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+/* Cambia color del enlace si checkbox está activado */
+.input-check:checked~.remember-forgot a {
+    color: var(--light-bacco);
+}
+
+/* Modo oscuro */
+.dark .remember-forgot a {
+    color: #ffffff;
+
+    &::after {
+        background-color: #ff8000;
+    }
+}
+
+
+.input-check:checked~button {
+    background: var(--light-bacco);
+    box-shadow: 0 0 15px var(--light-bacco);
+}
+
+.register-link {
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Estilo base del enlace de registro */
+.register-link {
+    position: relative;
+    display: inline-block;
+    color: #000000a8; // color claro por defecto
+    text-decoration: none;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 2px;
+        background-color: #f4f8fc; // subrayado claro
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+/* Cambio de color cuando el checkbox está activo */
+.input-check:checked~.register-link p a {
+    color: var(--light-bacco);
+}
+
+/* Modo oscuro */
+.dark .register-link {
+    color: #ffffff; // color del texto en modo oscuro
+
+    &::after {
+        background-color: #ff8000; // subrayado animado en modo oscuro
+    }
+}
+
+
+.button-init {
+    width: 100%;
+    height: 40px;
+    background: #004793;
+    /* Azul predeterminado */
+    color: rgb(240, 202, 250);
+    border-radius: 10px;
+    border: 2px solid #0056b3;
+    /* Borde azul oscuro */
+    outline: none;
+    cursor: pointer;
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Efecto al pasar el mouse */
+.button-init:hover {
+    background: #5361ff;
+    box-shadow: 0 0 10px rgba(170, 196, 224, 0.7);
+}
+
+/* Modo oscuro */
+.dark .button-init {
+    background: #05081c;
+    /* Naranja en modo oscuro */
+    border-color: #0502025b;
+    color: white;
+}
+
+.dark .button-init:hover {
+    background: #ff3300f6;
+    box-shadow: 0 0 10px rgba(255, 87, 51, 0.7);
+}
+
+.login-register {
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+.login-link {
+    position: relative;
+    display: inline-block;
+    color: #000000a8; // color por defecto
+    text-decoration: none;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 2px;
+        background-color: #f4f8fc; // subrayado claro
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+/* Si usas un input-check para cambiar color al activar */
+.input-check:checked~.login-link {
+    color: var(--light-bacco);
+}
+
+/* Modo oscuro */
+.dark .login-link {
+    color: #ffffff;
+
+    &::after {
+        background-color: #ff8000;
+    }
+}

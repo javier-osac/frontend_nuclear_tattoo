@@ -1,0 +1,41 @@
+---
+import config from "@/config/config.json";
+import { Image } from "astro:assets";
+const { src, showText } = Astro.props;
+const {
+  logo_text,
+  logo_width,
+  logo_height,
+  title,
+}: {
+  logo: string;
+  logo_text: string;
+  logo_width: string;
+  logo_height: string;
+  title: string;
+} = config.site;
+
+const text = logo_text;
+---
+
+<a href="/" class="navbar-brand flex flex-row items-center">
+  <Image
+    class="h-9 w-auto dark:hidden"
+    src="/images/logo.png"
+    alt={title}
+    width={Number(logo_width)}
+    height={Number(logo_height)}
+  />
+  <Image
+    class="h-9 w-auto hidden dark:block"
+    src="/images/n_logo_blanco_original.png"
+    alt={title}
+    width={Number(logo_width)}
+    height={Number(logo_height)}
+  />
+  {showText !== false && (
+    <p class="logo-text hidden md:block text-text md:text-3xl font-bold ml-2">
+      {text ? text : logo_text}
+    </p>
+  )}
+</a>

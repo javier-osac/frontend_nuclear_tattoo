@@ -1,0 +1,147 @@
+---
+import PageHeader from "@/components/core/PageHeader.astro";
+import Base from "@/layouts/Base_Dashboard.astro";
+import Cta from "@/layouts/partials/Cta.astro";
+import { getEntry } from "astro:content";
+
+const homepage = await getEntry("homepage", "index");
+// console.log(homepage);
+const { banner, sections, features, testimonial } = homepage.data;
+const call_to_action = homepage.data.call_to_action;
+---
+
+<Base>
+    <!-- Título principal -->
+<div class="mb-6 text-center">
+    <h2 class="font-semibold text-gray-800 dark:text-white">Registro de Ingresos y Egresos</h2>
+</div>
+
+<!-- Formulario -->
+<div class="mb-6 mx-auto max-w-4xl">
+    <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4 bg-white p-6 shadow-2xl sm:rounded-lg dark:bg-gray-800 dark:text-white">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-white">Agregar Nueva Transacción</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+            <!-- Fecha de Transacción -->
+            <div class="col-span-1">
+                <label for="transaction_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha y Hora</label>
+                <input type="datetime-local" id="transaction_date" name="transaction_date" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
+            </div>
+
+            <!-- Monto -->
+            <div class="col-span-1">
+                <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Monto</label>
+                <input type="number" step="0.01" id="amount" name="amount" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
+            </div>
+
+            <!-- Tipo de Transacción -->
+            <div class="col-span-1">
+                <label for="transaction_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Transacción</label>
+                <select id="transaction_type" name="transaction_type" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <option value="">Selecciona</option>
+                    <option value="ingreso">Ingreso</option>
+                    <option value="egreso">Egreso</option>
+                </select>
+            </div>
+
+            <!-- Categoría -->
+            <div class="col-span-1">
+                <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría</label>
+                <select id="category" name="category" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <option value="">Selecciona</option>
+                    <option value="venta">Venta</option>
+                    <option value="compra">Compra</option>
+                    <option value="servicio">Servicio</option>
+                    <option value="salario">Salario</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+
+            <!-- Método de Pago -->
+            <div class="col-span-1">
+                <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Método de Pago</label>
+                <select id="payment_method" name="payment_method" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                    <option value="">Selecciona</option>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="nequi">Nequi</option>
+                    <option value="daviplata">Daviplata</option>
+                </select>
+            </div>
+
+            <!-- Subir Recibo -->
+            <div class="col-span-1">
+                <label for="receipt" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Recibo (opcional)</label>
+                <input type="file" id="receipt" name="receipt" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-gray-700 dark:text-white dark:file:bg-gray-600 dark:file:text-white" />
+            </div>
+
+            <!-- Descripción -->
+            <div class="col-span-2">
+                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+                <textarea id="description" name="description" rows="3" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Detalles sobre la transacción..."></textarea>
+            </div>
+        </div>
+
+        <!-- Botón enviar -->
+        <div class="mt-4 flex justify-center w-full">
+            <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600">
+                Registrar Transacción
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Encabezado tabla -->
+<div class="mb-6 text-center mt-10">
+    <h3 class="font-semibold text-gray-800 dark:text-white">Historial de Transacciones</h3>
+</div>
+
+<div class="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto max-w-6xl mb-8">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th class="px-6 py-3">Fecha</th>
+                <th class="px-6 py-3">Monto</th>
+                <th class="px-6 py-3">Tipo</th>
+                <th class="px-6 py-3">Categoría</th>
+                <th class="px-6 py-3">Método de Pago</th>
+                <th class="px-6 py-3">Descripción</th>
+                <th class="px-6 py-3">Recibo</th>
+                <th class="px-6 py-3">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">2025-04-09 10:30</td>
+                <td class="px-6 py-4">$150.000</td>
+                <td class="px-6 py-4">Egreso</td>
+                <td class="px-6 py-4">Compra</td>
+                <td class="px-6 py-4">Transferencia</td>
+                <td class="px-6 py-4">Compra de insumos</td>
+                <td class="px-6 py-4">
+                    <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Ver Recibo</a>
+                </td>
+                <td class="px-6 py-4">
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</a>
+                </td>
+            </tr>
+            <tr class="bg-white dark:bg-gray-800">
+                <td class="px-6 py-4">2025-04-08 17:45</td>
+                <td class="px-6 py-4">$300.000</td>
+                <td class="px-6 py-4">Ingreso</td>
+                <td class="px-6 py-4">Venta</td>
+                <td class="px-6 py-4">Efectivo</td>
+                <td class="px-6 py-4">Tatuaje a cliente</td>
+                <td class="px-6 py-4 text-gray-400 italic">No disponible</td>
+                <td class="px-6 py-4">
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</Base>
