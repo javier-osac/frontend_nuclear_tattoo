@@ -11,15 +11,14 @@ const call_to_action = homepage.data.call_to_action;
 // 🔥 AQUÍ VIENE LA CONEXIÓN AL BACKEND
 const res = await fetch("http://localhost:3001/appointments");
 const appointments = await res.json();
-
 ---
 
 <Base>
   <!-- Título antes de la tabla -->
   <div class="mb-6 text-center">
-    <!-- <h2 class="font-semibold text-gray-800 dark:text-white">
+    <h2 class="font-semibold text-gray-800 dark:text-white">
       Agendamiento de Citas
-    </h2> -->
+    </h2>
   </div>
 
   <!-- Sección para agregar cita -->
@@ -38,8 +37,10 @@ const appointments = await res.json();
         <div class="col-span-1">
           <label
             for="customer_name"
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Nombre del Cliente</label>
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
+            Nombre del Cliente</label
+          >
           <input
             type="text"
             id="customer_name"
@@ -64,10 +65,10 @@ const appointments = await res.json();
             required
           >
             <option value="">Seleccione un empleado</option>
-            <option value="javier_ospina">Javier Ospina</option>
-            <option value="pedro_buenaventura">Pedro Buenaventura</option>
-            <option value="bresman_tafur">Bresman Tafur</option>
-            <option value="wilmer_cardozo">Wilmer Cardozo</option>
+            <option value="Javier Ospina">Javier Ospina</option>
+            <option value="Pedro">Pedro Buenaventura</option>
+            <option value="Bresman Tafur">Bresman Tafur</option>
+            <option value="Wilmer Cardozo">Wilmer Cardozo</option>
           </select>
         </div>
 
@@ -87,8 +88,9 @@ const appointments = await res.json();
             <option value="">Seleccione un servicio</option>
             <option value="Tatuaje">Tatuaje</option>
             <option value="Piercing">Piercing</option>
-            <option value="Cover_up">Cover up</option>
-            <option value="Modificacion_corporal">Modificación Corporal</option>
+            <option value="Cover up">Cover up</option>
+            <option value="Modificación Corporal">Modificación Corporal</option>
+            <option value="Diseño">Diseño</option>
           </select>
         </div>
 
@@ -107,7 +109,7 @@ const appointments = await res.json();
             required
           >
             <option value="">Seleccione un lugar</option>
-            <option value="Local nuclear tattoo">Local Nuclear Tattoo</option>
+            <option value="Local Nuclear Tattoo">Local Nuclear Tattoo</option>
             <option value="Domicilio">Domicilio</option>
           </select>
         </div>
@@ -166,79 +168,179 @@ const appointments = await res.json();
     class="relative overflow-x-auto shadow-lg sm:rounded-lg mx-auto max-w-6xl mb-8"
   >
     <table
+      id="exampleTable"
       class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
     >
       <thead
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
       >
         <tr>
-          <th scope="col" class="px-6 py-3"> Nombre del Cliente </th>
-          <th scope="col" class="px-6 py-3"> Empleado de Preferencia </th>
-          <th scope="col" class="px-6 py-3"> Tipo de Servicio </th>
-          <th scope="col" class="px-6 py-3"> Estado </th>
-          <td class="px-6 py-4"> Lugar </td>
-          <th scope="col" class="px-6 py-3"> Fecha </th>
+          <th scope="col" class="px-6 py-3">
+            Nombre del Cliente
+            <input
+              type="text"
+              class="filter-input w-full mt-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
+              data-column="client_filter"
+              placeholder="Filtrar..."
+            />
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Empleado de Preferencia
+            <input
+              type="text"
+              class="filter-input w-full mt-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
+              data-column="employee_filter"
+              placeholder="Filtrar..."
+            />
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Tipo de Servicio
+            <input
+              type="text"
+              class="filter-input w-full mt-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
+              data-column="service_filter"
+              placeholder="Filtrar..."
+            />
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Estado
+            <input
+              type="text"
+              class="filter-input w-full mt-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
+              data-column="status_filter"
+              placeholder="Filtrar..."
+            />
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Lugar
+            <input
+              type="text"
+              class="filter-input w-full mt-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
+              data-column="appointment_filter"
+              placeholder="Filtrar..."
+            />
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Fecha
+            <input
+              type="text"
+              class="filter-input w-full mt-2 px-2 py-1 border border-gray-300 rounded-md text-sm"
+              data-column="start_date_filter"
+              placeholder="Filtrar..."
+            />
+          </th>
           <th scope="col" class="px-6 py-3"> Acciones </th>
         </tr>
       </thead>
-      
+
       <tbody id="appointmentsTable">
         {
-          appointments.map((appointment) => (
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-              <th
-                scope="row"
-                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                {appointment.client_name}
-              </th>
-              <td class="px-6 py-4">{appointment.employee_name}</td>
-              <td class="px-6 py-4">{appointment.service_type}</td>
-              <td class="px-6 py-4">{appointment.status}</td>
-              <td class="px-6 py-4">{appointment.appointment_location}</td>
-              <td class="px-6 py-4">{appointment.start_date_time}</td>
-              <td class="px-6 py-4">
-                <a
-                  href="#"
-                   class="btn-edit font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          appointments &&
+            Array.isArray(appointments) &&
+            appointments.map((appointment) => (
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  data-column="client_filter"
                 >
-                  Editar
-                </a>
-                <a
-                  href="#"
-                  class="eliminar-cita font-medium text-red-600 dark:text-red-500 hover:underline ml-4"
-                >
-                  Eliminar
-                </a>
-              </td>
-            </tr>
-          ))
+                  {appointment.client_name}
+                </th>
+                <td class="px-6 py-4" data-column="employee_filter">
+                  {appointment.employee_name}
+                </td>
+                <td class="px-6 py-4" data-column="service_filter">
+                  {appointment.service_type}
+                </td>
+                <td class="px-6 py-4" data-column="status_filter">
+                  {appointment.status}
+                </td>
+                <td class="px-6 py-4" data-column="appointment_filter">
+                  {appointment.appointment_location === "Domicilio"
+                    ? appointment.domicile_address
+                    : "Local Nuclear Tattoo"}
+                </td>
+                <td class="px-6 py-4" data-column="start_date_filter">
+                  {new Date(appointment.start_date_time).toLocaleString(
+                    "es-CO",
+                    {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    },
+                  )}
+                </td>
+                <td class="px-6 py-4">
+                  <a
+                    href="#"
+                    class="btn-confirm font-medium text-green-600 dark:text-green-500 hover:underline"
+                  >
+                    Confirmar
+                  </a>
+                  <br />
+                  <a
+                    href="#"
+                    class="btn-cancel font-medium text-purple-600 dark:text-purple-500 hover:underline"
+                  >
+                    Cancelar
+                  </a>
+                  <br />
+                  <a
+                    href="#"
+                    class="btn-edit font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  >
+                    Editar
+                  </a>
+                  <br />
+                  <a
+                    href="#"
+                    class="eliminar-cita font-medium text-red-600 dark:text-red-500 hover:underline"
+                  >
+                    Eliminar
+                  </a>
+                </td>
+              </tr>
+            ))
         }
-      </tbody> 
+      </tbody>
     </table>
 
     <!-- Modal para editar cita -->
-   
-    <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm min-h-screen text-left">
-      <div class="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-lg sm:w-3/4 md:w-1/2">
+
+    <div
+      id="editModal"
+      class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm min-h-screen text-left"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-lg sm:w-3/4 md:w-1/2"
+      >
         <form id="editAppointmentForm" class="space-y-4">
-          <h3 class="text-lg font-medium text-gray-800 dark:text-white">Editar Cita</h3>
-    
+          <h3 class="text-lg font-medium text-gray-800 dark:text-white">
+            Editar Cita
+          </h3>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Nombre del Cliente -->
             <div class="col-span-1">
-              <label for="edit_customer_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre del Cliente</label>
+              <label
+                for="edit_customer_name"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Nombre del Cliente</label
+              >
               <input
-              type="text"
-              id="edit_customer_name"
-              name="edit_customer_name"
-              class="mt-1 block w-full px-2 py-2 leading-snug border border-gray-300 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-left"
-            />
+                type="text"
+                id="edit_customer_name"
+                name="edit_customer_name"
+                class="mt-1 block w-full px-2 py-2 leading-snug border border-gray-300 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-left"
+              />
             </div>
-    
+
             <!-- Empleado de Preferencia -->
             <div class="col-span-1">
-              <label for="edit_employee_preference" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Empleado de Preferencia</label>
+              <label
+                for="edit_employee_preference"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Empleado de Preferencia</label
+              >
               <select
                 id="edit_employee_preference"
                 name="edit_employee_preference"
@@ -246,16 +348,20 @@ const appointments = await res.json();
                 required
               >
                 <option value="">Seleccione un empleado</option>
-                <option value="javier_ospina">Javier Ospina</option>
-                <option value="pedro_buenaventura">Pedro Buenaventura</option>
-                <option value="bresman_tafur">Bresman Tafur</option>
-                <option value="wilmer_cardozo">Wilmer Cardozo</option>
+                <option value="Javier Ospina">Javier Ospina</option>
+                <option value="Pedro Buenaventura">Pedro Buenaventura</option>
+                <option value="Bresman Tafur">Bresman Tafur</option>
+                <option value="Wilmer Cardozo">Wilmer Cardozo</option>
               </select>
             </div>
-    
+
             <!-- Tipo de Cita -->
             <div class="col-span-1">
-              <label for="edit_appointment_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Servicio</label>
+              <label
+                for="edit_appointment_type"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Tipo de Servicio</label
+              >
               <select
                 id="edit_appointment_type"
                 name="edit_appointment_type"
@@ -263,16 +369,43 @@ const appointments = await res.json();
                 required
               >
                 <option value="">Seleccione un servicio</option>
-                <option value="tatuaje">Tatuaje</option>
-                <option value="piercing">Piercing</option>
-                <option value="cover_up">Cover up</option>
-                <option value="modificacion_corporal">Modificación Corporal</option>
+                <option value="Tatuaje">Tatuaje</option>
+                <option value="Piercing">Piercing</option>
+                <option value="Cover up">Cover up</option>
+                <option value="Modificación Corporal"
+                  >Modificación Corporal</option
+                >
+                <option value="Diseño">Diseño</option>
               </select>
             </div>
-    
+
             <!-- Lugar -->
             <div class="col-span-1">
-              <label for="edit_place" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lugar</label>
+              <label
+                for="edit_status"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Estado</label
+              >
+              <select
+                id="edit_status"
+                name="edit_status"
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                required
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Confirmada">Confirmada</option>
+                <option value="Cancelada">Cancelada</option>
+              </select>
+            </div>
+
+            <!-- Lugar -->
+            <div class="col-span-1">
+              <label
+                for="edit_place"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Lugar</label
+              >
               <select
                 id="edit_place"
                 name="edit_place"
@@ -280,14 +413,24 @@ const appointments = await res.json();
                 required
               >
                 <option value="">Seleccione un lugar</option>
-                <option value="local">Local Nuclear Tattoo</option>
-                <option value="domicilio">Domicilio</option>
+                <option value="Local Nuclear Tattoo"
+                  >Local Nuclear Tattoo</option
+                >
+                <option value="Domicilio">Domicilio</option>
               </select>
             </div>
-    
+
             <!-- Dirección (solo visible si selecciona "Domicilio") -->
-            <div id="edit_addressField" class="col-span-1" style="display: none;">
-              <label for="edit_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dirección</label>
+            <div
+              id="edit_addressField"
+              class="col-span-1"
+              style="display: none;"
+            >
+              <label
+                for="edit_address"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Dirección</label
+              >
               <input
                 type="text"
                 id="edit_address"
@@ -295,10 +438,14 @@ const appointments = await res.json();
                 class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
-    
+
             <!-- Fecha y Hora de la Cita -->
             <div class="col-span-1">
-              <label for="edit_appointment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha y Hora de la Cita</label>
+              <label
+                for="edit_appointment_date"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >Fecha y Hora de la Cita</label
+              >
               <input
                 type="datetime-local"
                 id="edit_appointment_date"
@@ -308,11 +455,11 @@ const appointments = await res.json();
               />
             </div>
           </div>
-    
+
           <div class="mt-4 flex justify-center w-full">
             <button
               type="submit"
-              class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 mr-4 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Guardar Cambios
             </button>
@@ -327,13 +474,8 @@ const appointments = await res.json();
         </form>
       </div>
     </div>
-    
-
-
-
   </div>
-
-<script type="module" src="/scripts/views/appointments.js"></script>
-  
-  
+  <script type="module" src="/scripts/views/appointments.js"></script>
+  <script src="/scripts/views/appointmentsDate.js" is:inline></script>
+  <script src="/scripts/views/appointmentsFilter.js" is:inline></script>
 </Base>

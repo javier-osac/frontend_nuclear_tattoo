@@ -17,15 +17,19 @@ export default defineConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          api: "modern-compiler"
-        }
-      }
+          api: "modern-compiler",
+        },
+      },
     },
-   // resolve: {
-    //  alias: {
-      //  "@": new URL("./src", import.meta.url).pathname,
-     // }
-   // } (opcional esta configuracion para llamar un alias @)
+    server: {
+      proxy: {
+        '/uploads': {
+          target: 'http://localhost:3001', // Backend
+          changeOrigin: true,
+          secure: false, // Ignorar certificados si usas HTTPS localmente
+        },
+      },
+    },
   },
   image: {
     service: sharpImageService(),
@@ -43,12 +47,12 @@ export default defineConfig({
         "@/components/Badge.astro",
       ],
     }),
-    mdx()
+    mdx(),
   ],
   markdown: {
     shikiConfig: {
       theme: "one-dark-pro",
       wrap: true,
-    }
-  }
+    },
+  },
 });

@@ -9,18 +9,17 @@ const { Content } = await features.render();
 ---
 
 <Base>
-<div id="container">
-<!--formulario de inicio de sesion -->
-  <div class="form-login">
-      <form action="#">
-      
+  <div id="container">
+    <!--Formulario de inicio de sesion -->
+    <div class="form-login">
+      <form id="loginForm">
         <h2>Iniciar Sesion</h2>
 
         <div class="input-box">
           <span class="icon">
             <ion-icon name="mail-outline"></ion-icon>
           </span>
-          <input type="email" required="required" />
+          <input name="email_login" type="email" required="required" />
           <label>Correo Electrónico</label>
           <div class="input-line"></div>
         </div>
@@ -29,15 +28,12 @@ const { Content } = await features.render();
           <span class="icon">
             <ion-icon name="lock-closed-outline"></ion-icon>
           </span>
-          <input type="password" required="required" />
+          <input name="password_login" type="password" required="required" />
           <label>Contraseña</label>
           <div class="input-line"></div>
         </div>
 
         <div class="remember-forgot">
-          <label>
-            <input type="checkbox" /> Recordar
-          </label>
           <a href="#">¿Has olvidado tu contraseña?</a>
         </div>
 
@@ -45,180 +41,300 @@ const { Content } = await features.render();
 
         <div class="login-register">
           <p>¿No tienes una cuenta?</p>
-          <a href="#"
-          class="register-link">Registro</a>  
+          <a href="#" class="register-link">Registrate</a>
         </div>
       </form>
+    </div>
+
+    <!--Formulario de registro -->
+    <div class="form-register">
+      <form id="registerForm">
+        <h2>Registro</h2>
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="people-outline"></ion-icon>
+          </span>
+          <input name="name" type="text" required="required" />
+          <label>Nombre de Usuario</label>
+          <div class="input-line"></div>
+        </div>
+
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="mail-outline"></ion-icon>
+          </span>
+          <input name="email" type="email" required="required" />
+          <label>Correo Electrónico</label>
+          <div class="input-line"></div>
+        </div>
+
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+          </span>
+          <input name="password" type="password" required="required" />
+          <label>Contraseña</label>
+          <div class="input-line"></div>
+        </div>
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+          </span>
+          <input type="password" required="required" />
+          <label>Confirmar contraseña</label>
+          <div class="input-line"></div>
+        </div>
+
+        <div class="remember-forgot">
+          <label>
+            <input type="checkbox" required="required" /> Aceptar terminos y condiciones
+          </label>
+        </div>
+        <button type="submit" class="button-init">Registrarse</button>
+        <div class="login-register">
+          <p>¿Ya tienes una cuenta?</p>
+          <a href="#" class="login-link">Login</a>
+        </div>
+      </form>
+    </div>
+
+    <!--Formulario de recuperacion -->
+    <div class="form-forgot">
+      <form action="#">
+        <h2>¿Olvidaste tu contraseña?</h2>
+
+        <div class="input-box">
+          <span class="icon">
+            <ion-icon name="mail-outline"></ion-icon>
+          </span>
+          <input name="email" type="email" required="required" />
+          <label>Correo Electrónico</label>
+          <div class="input-line"></div>
+        </div>
+
+        <p class="forgot-info">
+          Ingresa tu correo electrónico y te enviaremos un enlace para
+          restablecerla.
+        </p>
+
+        <button type="submit" class="button-init">Enviar</button>
+
+        <div class="login-register">
+          <p>¿Ya la recordaste?</p>
+          <a href="#" class="back-login-link">Volver al Login</a>
+        </div>
+      </form>
+    </div>
   </div>
 
-<!--formulario de registro -->
-  <div class="form-register">
-    <form action="#">
-    
-      <h2>Registro</h2>
-      <div class="input-box">
-        <span class="icon">
-          <ion-icon name="people-outline"></ion-icon>
-        </span>
-        <input type="text" required="required" />
-        <label>Nombre de Usuario</label>
-        <div class="input-line"></div>
-      </div>
+  <!--Script para Iconos Ionicons -->
 
-      <div class="input-box">
-        <span class="icon">
-          <ion-icon name="mail-outline"></ion-icon>
-        </span>
-        <input type="email" required="required" />
-        <label>Correo Electrónico</label>
-        <div class="input-line"></div>
-      </div>
+  <script
+    type="module"
+    src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
 
-      <div class="input-box">
-        <span class="icon">
-          <ion-icon name="lock-closed-outline"></ion-icon>
-        </span>
-        <input type="password" required="required" />
-        <label>Contraseña</label>
-        <div class="input-line"></div>
-      </div>
-      <div class="input-box">
-        <span class="icon">
-          <ion-icon name="lock-closed-outline"></ion-icon>
-        </span>
-        <input type="password" required="required" />
-        <label>Confirmar contraseña</label>
-        <div class="input-line"></div>
-      </div>
+  <!--Script para interactividad de los formularios -->
 
-      <div class="remember-forgot">
-        <label>
-          <input type="checkbox" required="required"/> Agregar terminos y condiciones
-        </label>
-      </div>
-      <button type="submit" class="button-init">Registrarse</button>
-      <div class="login-register">
-        <p>¿Ya tienes una cuenta?</p>
-        <a href="#"
-        class="login-link">Login</a>  
-      </div>
-    </form>
-  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.querySelector("#container");
+      const loginForm = document.querySelector(".form-login");
+      const registerForm = document.querySelector(".form-register");
+      const forgotForm = document.querySelector(".form-forgot");
 
-<!--formulario de recuperacion -->
-  <div class="form-forgot">
-    <form action="#">
-      <h2>¿Olvidaste tu contraseña?</h2>
-    
-      <div class="input-box">
-        <span class="icon">
-          <ion-icon name="mail-outline"></ion-icon>
-        </span>
-        <input type="email" required="required" />
-        <label>Correo Electrónico</label>
-        <div class="input-line"></div>
-      </div>
-    
-      <p class="forgot-info">
-        Ingresa tu correo electrónico y te enviaremos un enlace para restablecerla.
-      </p>
-    
-      <button type="submit" class="button-init">Enviar</button>
-    
-      <div class="login-register">
-        <p>¿Ya la recordaste?</p>
-        <a href="#" class="back-login-link">Volver al Login</a>
-      </div>
-      
-    </form>
-    
-  </div>
-</div>
-  
-  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector("#container");
-    const loginForm = document.querySelector(".form-login");
-    const registerForm = document.querySelector(".form-register");
-    const forgotForm = document.querySelector(".form-forgot");
+      const loginLinks = document.querySelectorAll(".login-link");
+      const registerLink = document.querySelector(".register-link");
+      const forgotLink = document.querySelector(".remember-forgot a");
+      const backToLoginLink = document.querySelector(".back-login-link");
 
-    const loginLinks = document.querySelectorAll(".login-link");
-    const registerLink = document.querySelector(".register-link");
-    const forgotLink = document.querySelector(".remember-forgot a");
-    const backToLoginLink = document.querySelector(".back-login-link");
+      function showForm(form) {
+        container.classList.remove(
+          "show-login",
+          "show-register",
+          "show-forgot",
+        );
+        container.classList.add(`show-${form}`);
 
-  function showForm(form) {
-  container.classList.remove("show-login", "show-register", "show-forgot");
-  container.classList.add(`show-${form}`);
+        requestAnimationFrame(() => {
+          const height = {
+            login: loginForm.offsetHeight,
+            register: registerForm.offsetHeight,
+            forgot: forgotForm.offsetHeight,
+          }[form];
+          container.style.height = `${height}px`;
+        });
 
-  requestAnimationFrame(() => {
-    const height = {
-      login: loginForm.offsetHeight,
-      register: registerForm.offsetHeight,
-      forgot: forgotForm.offsetHeight,
-    }[form];
-    container.style.height = `${height}px`;
-  });
+        localStorage.setItem("formState", form);
+      }
 
-  localStorage.setItem("formState", form);
-}
+      // Listeners
+      registerLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        showForm("register");
+      });
 
+      loginLinks?.forEach((link) =>
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          showForm("login");
+        }),
+      );
 
-  // Listeners
-  registerLink?.addEventListener("click", (e) => {
-    e.preventDefault();
-    showForm("register");
-  });
+      forgotLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        showForm("forgot");
+      });
 
-  loginLinks?.forEach(link =>
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
+      backToLoginLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        showForm("login");
+      });
+
+      // Cargar estado guardado
       showForm("login");
-    })
-  );
 
-  forgotLink?.addEventListener("click", (e) => {
-    e.preventDefault();
-    showForm("forgot");
-  });
+      //script para que el label se mantenga arriba sin necesidad de que se valide
+    });
 
-  backToLoginLink?.addEventListener("click", (e) => {
-    e.preventDefault();
-    showForm("login");
-  });
+    document.querySelectorAll(".input-box input").forEach((input) => {
+      // Al cargar la página, por si ya hay texto
+      if (input.value.trim() !== "") {
+        input.classList.add("has-content");
+      }
 
-  // Cargar estado guardado
-  showForm("login");
+      input.addEventListener("input", () => {
+        if (input.value.trim() !== "") {
+          input.classList.add("has-content");
+        } else {
+          input.classList.remove("has-content");
+        }
+      });
+    });
 
+    //ruta para que el submit me devuelva al login delk form
+    document.querySelectorAll("form").forEach((form) => {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault(); // Previene el envío real
+        // Redirigir a la página de login (ajusta la ruta si es diferente)
+      });
+    });
+  </script>
 
-//script para que el label se mantenga arriba sin necesidad de que se valide
+  <!--Conexión al backend, Funcionalidad -->
 
-});
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Formulario de registro
+      const registerForm = document.getElementById("registerForm");
+      if (registerForm) {
+        registerForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
 
-document.querySelectorAll('.input-box input').forEach(input => {
-    // Al cargar la página, por si ya hay texto
-    if (input.value.trim() !== '') {
-      input.classList.add('has-content');
-    }
+          const formData = new FormData(registerForm);
+          const userData = {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            password: formData.get("password"),
+          };
 
-    input.addEventListener('input', () => {
-      if (input.value.trim() !== '') {
-        input.classList.add('has-content');
-      } else {
-        input.classList.remove('has-content');
+          try {
+            const response = await fetch(
+              "http://localhost:3001/users/register",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData),
+              },
+            );
+
+            const result = await response.json();
+            alert(result.message || result.error);
+
+            if (response.ok) {
+              // Redirigir al login después del registro exitoso
+              window.location.href = "/login_register";
+            }
+          } catch (error) {
+            console.error("Error al registrar usuario:", error);
+          }
+        });
+      }
+
+      // Formulario de inicio de sesión
+      const loginForm = document.getElementById("loginForm");
+      if (loginForm) {
+        loginForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(loginForm);
+          const credentials = {
+            email: formData.get("email_login"),
+            password: formData.get("password_login"),
+          };
+
+          try {
+            const response = await fetch("http://localhost:3001/users/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(credentials),
+            });
+
+            const result = await response.json();
+            if (result.token) {
+              localStorage.setItem("token", result.token);
+              alert("Inicio de sesión exitoso");
+
+              // Redirigir a appointments después del inicio de sesión exitoso
+              window.location.href = "/appointments";
+            } else {
+              alert(result.error);
+            }
+          } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+          }
+        });
+      }
+
+      // Formulario de recuperación de contraseña
+      const forgotForm = document.querySelector(".form-forgot form");
+      if (forgotForm) {
+        forgotForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(forgotForm);
+          const email = formData.get("email");
+
+          try {
+            const response = await fetch(
+              "http://localhost:3001/users/request-password-reset",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+              },
+            );
+
+            const result = await response.json();
+            if (response.ok) {
+              alert(
+                result.message ||
+                  "Revisa tu correo para continuar con el restablecimiento de contraseña.",
+              );
+              // Redirigir a login después de la solicitud exitosa
+              showForm("login");
+            } else {
+              alert(result.error || "Error al procesar la solicitud.");
+            }
+          } catch (error) {
+            console.error("Error al enviar solicitud de recuperación:", error);
+          }
+        });
       }
     });
-  });
-
-//ruta para que el submit me devuelva al login delk form  
-  document.querySelectorAll("form").forEach(form => {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // Previene el envío real
-    // Redirigir a la página de login (ajusta la ruta si es diferente)
-    window.location.href = "/login_register"; // o la ruta que tengas para login
-  });
-});
-</script>
+  </script>
 </Base>

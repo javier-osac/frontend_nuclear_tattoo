@@ -10,103 +10,328 @@ const call_to_action = homepage.data.call_to_action;
 ---
 
 <Base>
-    <!-- Título principal -->
-    <div class="mb-6 text-center">
-        <h2 class="font-semibold text-gray-800 dark:text-white">Deja tu Comentario</h2>
-        <p class="text-gray-600 dark:text-gray-300 mt-2">Queremos saber tu experiencia en nuestro estudio de tatuajes.</p>
+  <!-- Título principal -->
+  <div class="mb-6 text-center">
+    <h2 class="font-semibold text-gray-800 dark:text-white">
+      Deja tu Comentario
+    </h2>
+    <p class="text-gray-600 dark:text-gray-300 mt-2">
+      Queremos saber tu experiencia en nuestro estudio de tatuajes.
+    </p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="mb-6 mx-auto max-w-4xl">
+    <form
+      action="#"
+      method="POST"
+      class="space-y-4 bg-white p-6 shadow-2xl sm:rounded-lg dark:bg-gray-800 dark:text-white"
+    >
+      <h3 class="text-lg font-medium text-gray-800 dark:text-white">
+        Tu opinión es importante
+      </h3>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Nombre del Cliente -->
+        <div class="col-span-1">
+          <label
+            for="name"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >Nombre</label
+          >
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            required
+          />
+        </div>
+
+        <!-- Calificación -->
+        <div class="col-span-1">
+          <label
+            for="rating"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >Calificación</label
+          >
+          <select
+            id="rating"
+            name="rating"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            required
+          >
+            <option value="">Selecciona</option>
+            <option value="5">⭐⭐⭐⭐⭐ - Excelente</option>
+            <option value="4">⭐⭐⭐⭐ - Muy Bueno</option>
+            <option value="3">⭐⭐⭐ - Bueno</option>
+            <option value="2">⭐⭐ - Regular</option>
+            <option value="1">⭐ - Malo</option>
+          </select>
+        </div>
+
+        <!-- Fecha de Visita -->
+        <div class="col-span-1">
+          <label
+            for="visit_date"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >Fecha de la Visita</label
+          >
+          <input
+            type="date"
+            id="visit_date"
+            name="visit_date"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            required
+          />
+        </div>
+
+        <!-- Servicio Recibido -->
+        <div class="col-span-1">
+          <label
+            for="service"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >Servicio Recibido</label
+          >
+          <select
+            id="service"
+            name="service"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            required
+          >
+            <option value="">Selecciona</option>
+            <option value="Tatuaje">Tatuaje</option>
+            <option value="Piercing">Piercing</option>
+            <option value="Retoque">Retoque</option>
+            <option value="Consulta">Consulta</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <!-- Comentario -->
+        <div class="col-span-2">
+          <label
+            for="comment"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >Comentario</label
+          >
+          <textarea
+            id="comment"
+            name="comment"
+            rows="4"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            placeholder="Cuéntanos cómo fue tu experiencia..."
+            required></textarea>
+        </div>
+      </div>
+
+      <!-- Botón enviar -->
+      <div class="mt-4 flex justify-center w-full">
+        <button
+          type="submit"
+          class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600"
+        >
+          Enviar Comentario
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Sección protegida por permisos -->
+  <div id="protected-section"></div>
+
+  <script>
+    import { getUserFromToken } from "../utils/auth.js";
+
+    const token = localStorage.getItem("token");
+    const user = token ? getUserFromToken(token) : null;
+    const hasPermission = user && user.permissions.includes("see_comments");
+
+    const protectedSection = document.getElementById("protected-section");
+
+protectedSection.innerHTML = `
+    <div class="section-with-permission">
+        <div class="mb-6 text-center mt-10">
+            <h3 class="font-semibold text-gray-800 dark:text-white">Comentarios Recientes</h3>
+        </div>
+        <div class="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto max-w-6xl mb-8">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">Nombre</th>
+                        <th class="px-6 py-3">Fecha</th>
+                        <th class="px-6 py-3">Servicio</th>
+                        <th class="px-6 py-3">Calificación</th>
+                        <th class="px-6 py-3">Comentario</th>
+                        ${hasPermission ? '<th class="px-6 py-3">Acciones</th>' : ''}
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
+`;
 
-    <!-- Formulario -->
-    <div class="mb-6 mx-auto max-w-4xl">
-        <form action="#" method="POST" class="space-y-4 bg-white p-6 shadow-2xl sm:rounded-lg dark:bg-gray-800 dark:text-white">
-            <h3 class="text-lg font-medium text-gray-800 dark:text-white">Tu opinión es importante</h3>
+  </script>
+<script>
+    import { getUserFromToken } from "../utils/auth.js";
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- Nombre del Cliente -->
-                <div class="col-span-1">
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
-                    <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
-                </div>
+const token = localStorage.getItem("token");
+const user = token ? getUserFromToken(token) : null;
+const hasPermission = user && user.permissions.includes("see_comments");
 
-                <!-- Calificación -->
-                <div class="col-span-1">
-                    <label for="rating" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Calificación</label>
-                    <select id="rating" name="rating" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-                        <option value="">Selecciona</option>
-                        <option value="5">⭐⭐⭐⭐⭐ - Excelente</option>
-                        <option value="4">⭐⭐⭐⭐ - Muy Bueno</option>
-                        <option value="3">⭐⭐⭐ - Bueno</option>
-                        <option value="2">⭐⭐ - Regular</option>
-                        <option value="1">⭐ - Malo</option>
-                    </select>
-                </div>
+// Función para enviar una nueva opinión
+async function submitOpinion(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const opinion = {
+        name: formData.get("name"),
+        qualification: formData.get("rating"),
+        opinion_date: formData.get("visit_date"),
+        service: formData.get("service"),
+        description: formData.get("comment"),
+    };
 
-                <!-- Fecha de Visita -->
-                <div class="col-span-1">
-                    <label for="visit_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de la Visita</label>
-                    <input type="date" id="visit_date" name="visit_date" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
-                </div>
+    try {
+        const response = await fetch("http://localhost:3001/opinion", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(opinion),
+        });
 
-                <!-- Servicio Recibido -->
-                <div class="col-span-1">
-                    <label for="service" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Servicio Recibido</label>
-                    <select id="service" name="service" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
-                        <option value="">Selecciona</option>
-                        <option value="tatuaje">Tatuaje</option>
-                        <option value="retoque">Retoque</option>
-                        <option value="consulta">Consulta</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                </div>
+        if (!response.ok) {
+            throw new Error("Error al enviar la opinión");
+        }
 
-                <!-- Comentario -->
-                <div class="col-span-2">
-                    <label for="comment" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Comentario</label>
-                    <textarea id="comment" name="comment" rows="4" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Cuéntanos cómo fue tu experiencia..." required></textarea>
-                </div>
-            </div>
+        form.reset();
+        fetchOpinions();
+    } catch (error) {
+        console.error("Error al enviar la opinión:", error);
+    }
+}
 
-            <!-- Botón enviar -->
-            <div class="mt-4 flex justify-center w-full">
-                <button type="submit" class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600">
-                    Enviar Comentario
-                </button>
-            </div>
-        </form>
-    </div>
+// Función para obtener y renderizar opiniones
+async function fetchOpinions() {
+    try {
+        const response = await fetch("http://localhost:3001/opinion");
+        if (!response.ok) {
+            throw new Error("Error al obtener las opiniones");
+        }
 
-    <!-- Opcional: Lista de comentarios anteriores -->
-    <div class="mb-6 text-center mt-10">
-        <h3 class="font-semibold text-gray-800 dark:text-white">Comentarios Recientes</h3>
-    </div>
+        const opinions = await response.json();
+        renderOpinions(opinions);
+    } catch (error) {
+        console.error("Error al obtener las opiniones:", error);
+    }
+}
 
-    <div class="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto max-w-6xl mb-8">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th class="px-6 py-3">Nombre</th>
-                    <th class="px-6 py-3">Fecha</th>
-                    <th class="px-6 py-3">Servicio</th>
-                    <th class="px-6 py-3">Calificación</th>
-                    <th class="px-6 py-3">Comentario</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="px-6 py-4">Carlos M.</td>
-                    <td class="px-6 py-4">2025-04-12</td>
-                    <td class="px-6 py-4">Tatuaje</td>
-                    <td class="px-6 py-4">⭐⭐⭐⭐⭐</td>
-                    <td class="px-6 py-4">Excelente trabajo, muy profesional. ¡Volveré pronto!</td>
-                </tr>
-                <tr class="bg-white dark:bg-gray-800">
-                    <td class="px-6 py-4">Andrea G.</td>
-                    <td class="px-6 py-4">2025-04-10</td>
-                    <td class="px-6 py-4">Consulta</td>
-                    <td class="px-6 py-4">⭐⭐⭐⭐</td>
-                    <td class="px-6 py-4">Muy buena atención. Me ayudaron con todas mis dudas.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+function attachDeleteEvent() {
+    const deleteButtons = document.querySelectorAll(".delete-button");
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const id = event.target.dataset.id;
+            deleteOpinion(id);
+        });
+    });
+}
+
+// Renderizar opiniones en la tabla
+function renderOpinions(opinions) {
+    const tableBody = document.querySelector("#protected-section table tbody");
+    if (!tableBody) {
+        console.error("No se encontró la tabla para renderizar opiniones");
+        return;
+    }
+
+    tableBody.innerHTML = opinions
+        .map((opinion) => {
+            const formattedDate = new Date(opinion.opinion_date).toLocaleDateString("es-CO", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            });
+
+            return `
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <td class="px-6 py-4">${opinion.name}</td>
+                <td class="px-6 py-4">${formattedDate}</td>
+                <td class="px-6 py-4">${opinion.service}</td>
+                <td class="px-6 py-4">${"⭐".repeat(opinion.qualification)}</td>
+                <td class="px-6 py-4">${opinion.description}</td>
+                ${
+                    hasPermission
+                        ? `<td class="px-6 py-4">
+                            <button class="delete-button font-medium text-red-600 dark:text-red-500 hover:underline" data-id="${opinion.id_opinion}">
+                                Eliminar
+                            </button>
+                        </td>`
+                        : ""
+                }
+            </tr>`;
+        })
+        .join("");
+
+    if (hasPermission) {
+        attachDeleteEvent();
+    }
+}
+
+// Función para eliminar una opinión
+async function deleteOpinion(id) {
+    if (!confirm("¿Estás seguro de que deseas eliminar esta opinión?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3001/opinion/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al eliminar la opinión");
+        }
+
+        fetchOpinions();
+    } catch (error) {
+        console.error("Error al eliminar la opinión:", error);
+    }
+}
+
+// Observador para cambios en el DOM
+const observer = new MutationObserver((mutations) => {
+    const tableBody = document.querySelector("#protected-section table tbody");
+    if (tableBody) {
+        console.log("Tabla encontrada, cargando opiniones...");
+        fetchOpinions();
+        observer.disconnect(); // Detener el observador después de encontrar la tabla
+    } else {
+        console.log("Tabla no encontrada, esperando cambios...");
+    }
+});
+
+// Reiniciar el observador tras el swap
+function restartObserver() {
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Evento para el swap de Astro
+document.addEventListener("astro:after-swap", () => {
+    console.log("Swap detectado, reiniciando observador...");
+    restartObserver();
+});
+
+// Evento de carga inicial
+document.addEventListener("DOMContentLoaded", () => {
+    fetchOpinions();
+
+    const form = document.querySelector("form");
+    if (form) {
+        form.addEventListener("submit", submitOpinion);
+    }
+
+    restartObserver();
+});
+
+</script>
 </Base>

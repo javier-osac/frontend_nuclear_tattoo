@@ -1,52 +1,54 @@
 ---
-import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/core/PageHeader.astro";
+import Base from "@/layouts/Base_Dashboard.astro";
+import Cta from "@/layouts/partials/Cta.astro";
+import { getEntry } from "astro:content";
 import theme from "@/config/theme.json";
 import "@/styles/gallery.scss";
 
-// Extracción de los colores del tema
-const { colors: themeColors } = theme;
-
-// Lista de transparencias para efectos visuales
-const transparencies = [
-  "/10",
-  "/20",
-  "/30",
-  "/40",
-  "/50",
-  "/60",
-  "/70",
-  "/80",
-  "/90",
-  "",
-].reverse();
+const homepage = await getEntry("homepage", "index");
+const { banner, sections, features, testimonial } = homepage.data;
+const call_to_action = homepage.data.call_to_action;
 ---
 
 <Base>
-  <!-- Contenedor principal de video e imágenes laterales -->
-  <section class="video-container">
-    <!-- Imagen para tema oscuro -->
-    <img
-      class="side-image hidden dark:block"
-      src="./images/n_logo_blanco_original.png"
-      alt="maquina de tatuar"
-      loading="lazy"
-    />
-    <!-- Imagen para tema claro -->
-    <img
-      class="side-image block dark:hidden"
-      src="./images/logo.png"
-      alt="maquina de tatuar"
-      loading="lazy"
-    />
-    <!-- Video principal -->
-    <video id="videoTattoo" width="400px" height="600px" controls>
-      <source src="./images/videotattoo.mp4" type="video/mp4" />
-      Tu navegador no soporta la reproducción de videos.
-    </video>
-  </section>
+  <div
+    class="flex flex-col items-center justify-center min-h-screen text-center"
+  >
+    <!-- Título de la galería -->
+    <h1 class="galeria-text text-4xl font-bold mb-4">Galería</h1>
 
-  <!-- Título de la galería -->
-  <h1 class="galeria-text" style="text-align: center;">Galería</h1>
+    <!-- Sección de Texto -->
+    <p class="text-lg mb-6">
+      En esta sección puedes agregar o eliminar imágenes según consideres
+      necesario.
+    </p>
+
+    <!-- Botones de interacción -->
+    <div class="flex flex-wrap items-center justify-center gap-4 mt-4">
+      <button
+        type="button"
+        class="agregar-imagen btn btn-primary rounded-full px-6 py-2"
+      >
+        Agregar imagen
+      </button>
+      <button
+        id="btnToggleDeleteMode"
+        type="button"
+        class="btn btn-danger rounded-full px-6 py-2"
+      >
+        Eliminar imagen
+      </button>
+      <button
+        id="btnConfirmDelete"
+        type="button"
+        class="btn btn-danger rounded-full px-6 py-2"
+        style="display: none;"
+      >
+        Confirmar eliminación
+      </button>
+    </div>
+  </div>
 
   <!-- Contenedor de la galería -->
   <section id="galeria" class="galeria">
@@ -59,7 +61,9 @@ const transparencies = [
     class="hidden fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center"
   >
     <!-- Flecha anterior -->
-    <button id="prevImage" class="nav-arrow left-4" style="color: white">❮</button>
+    <button id="prevImage" class="nav-arrow left-4" style="color: white"
+      >❮</button
+    >
     <div class="relative">
       <!-- Botón de cierre -->
       <button
@@ -77,20 +81,31 @@ const transparencies = [
       />
     </div>
     <!-- Flecha siguiente -->
-    <button id="nextImage" class="nav-arrow right-4" style="color: white">❯</button>
+    <button id="nextImage" class="nav-arrow right-4" style="color: white"
+      >❯</button
+    >
   </div>
 
   <!-- Modal para agregar nueva imagen -->
-  <div id="addImageModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm min-h-screen text-left">
-    <div class="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-lg sm:w-3/4 md:w-1/2">
+  <div
+    id="addImageModal"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm min-h-screen text-left"
+  >
+    <div
+      class="bg-white dark:bg-gray-800 dark:text-white p-6 rounded-lg shadow-lg sm:w-3/4 md:w-1/2"
+    >
       <form id="addImageForm" class="space-y-4" enctype="multipart/form-data">
-
-        <h3 class="text-lg font-medium text-gray-800 dark:text-white">Agregar Imagen</h3>
+        <h3 class="text-lg font-medium text-gray-800 dark:text-white">
+          Agregar Imagen
+        </h3>
 
         <div class="grid grid-cols-1 gap-6">
           <!-- Campo para el título de la imagen -->
           <div>
-            <label for="image_title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="image_title"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Título
             </label>
             <input
@@ -104,7 +119,10 @@ const transparencies = [
 
           <!-- Campo para la descripción de la imagen -->
           <div>
-            <label for="image_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="image_description"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Descripción
             </label>
             <textarea
@@ -112,13 +130,15 @@ const transparencies = [
               name="image_description"
               rows="3"
               class="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-              placeholder="Describe brevemente la imagen (opcional)"
-            ></textarea>
+              placeholder="Describe brevemente la imagen (opcional)"></textarea>
           </div>
 
           <!-- Campo para seleccionar el archivo de imagen -->
           <div>
-            <label for="image_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="image_file"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Seleccionar Imagen
             </label>
             <input
@@ -151,7 +171,17 @@ const transparencies = [
       </form>
     </div>
   </div>
-  
+
+  <script>
+    import { getUserFromToken } from "../utils/auth.js";
+
+    const token = localStorage.getItem("token");
+    const user = token ? getUserFromToken(token) : null;
+
+    if (!user || !user.permissions.includes("manage_gallery")) {
+      window.location.href = "/404_closed"; // Redirigir a una página de acceso denegado
+    }
+  </script>
 
   <!-- Script principal de la galería -->
   <script type="module" src="/scripts/views/gallery.js"></script>
