@@ -1,8 +1,10 @@
 // Selección de elementos del DOM
+import Swal from '../../../node_modules/sweetalert2';
 import { getUserFromToken } from "../../../src/utils/auth.js";
 const form = document.querySelector('form');
 const editModal = document.getElementById('editModal');
 const appointmentsTable = document.getElementById('appointmentsTable');
+
 
 /**
  * Maneja la creación de una nueva cita y su envío al backend
@@ -34,9 +36,13 @@ form.addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-
     if (res.ok) {
-      alert('Cita creada exitosamente');
+      Swal.fire({
+        icon: 'success',
+        title: 'Cita creada',
+        text: 'La cita fue registrada correctamente',
+        timer: 2000,
+      });
       form.reset();
       loadAppointments(); // Actualizar la tabla de citas
     } else {
@@ -256,7 +262,6 @@ async function loadAppointments() {
   }
 }
 
-
 /**
  * Maneja la eliminación de una cita al hacer clic en "Eliminar"
  */
@@ -270,8 +275,18 @@ document.addEventListener('click', async (e) => {
       return;
     }
 
-    const confirmed = confirm('¿Estás seguro de eliminar esta cita?');
-    if (!confirmed) return;
+    const result = await Swal.fire({
+      title: '¿Eliminar cita?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#e3342f',
+      cancelButtonColor: '#6c757d'
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       const res = await fetch(`http://localhost:3001/appointments/${id}`, {
@@ -279,16 +294,31 @@ document.addEventListener('click', async (e) => {
       });
 
       if (res.ok) {
-        alert('Cita eliminada exitosamente');
+        await Swal.fire({
+          icon: 'success',
+          title: 'Eliminada',
+          text: 'La cita fue eliminada exitosamente.',
+          confirmButtonText: 'OK'
+        });
         loadAppointments();
       } else {
-        alert('Error al eliminar la cita');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar la cita.'
+        });
       }
     } catch (error) {
       console.error('Error al eliminar la cita:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error inesperado.'
+      });
     }
   }
 });
+
 
 /**
  * Maneja la confirmación de una cita al hacer clic en "Confirmar"
@@ -297,59 +327,113 @@ document.addEventListener('click', async (e) => {
   if (e.target.matches('.btn-confirm')) {
     e.preventDefault();
 
-    const id = e.target.dataset.id; // Obtener el ID de la cita desde el atributo data-id
+    const id = e.target.dataset.id;
     if (!id) {
       console.error('No se encontró el id de la cita');
       return;
     }
 
+    const result = await Swal.fire({
+      title: '¿Confirmar cita?',
+      text: '¿Estás seguro de que deseas confirmar esta cita?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, confirmar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#38a169', // verde
+      cancelButtonColor: '#6c757d'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       const res = await fetch(`http://localhost:3001/appointments/${id}`, {
-        method: 'PATCH', // Utilizamos PATCH para actualizar un solo campo
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'Confirmada' }), // Solo actualizamos el campo status
+        body: JSON.stringify({ status: 'Confirmada' }),
       });
 
       if (res.ok) {
-        alert('Cita confirmada exitosamente');
-        loadAppointments(); // Actualizar la tabla de citas
+        await Swal.fire({
+          icon: 'success',
+          title: 'Cita confirmada',
+          text: 'La cita fue confirmada correctamente',
+          confirmButtonText: 'OK'
+        });
+        loadAppointments();
       } else {
-        alert('Error al confirmar la cita');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo confirmar la cita.'
+        });
       }
     } catch (error) {
       console.error('Error al confirmar la cita:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error inesperado.'
+      });
     }
   }
 });
 
 /**
- * Maneja la confirmación de una cita al hacer clic en "Confirmar"
+ * Maneja la cancelación de una cita al hacer clic en "Cancelar"
  */
 document.addEventListener('click', async (e) => {
   if (e.target.matches('.btn-cancel')) {
     e.preventDefault();
 
-    const id = e.target.dataset.id; // Obtener el ID de la cita desde el atributo data-id
+    const id = e.target.dataset.id;
     if (!id) {
       console.error('No se encontró el id de la cita');
       return;
     }
 
+    const result = await Swal.fire({
+      title: '¿Cancelar cita?',
+      text: '¿Estás seguro de que deseas cancelar esta cita?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cancelar',
+      cancelButtonText: 'Volver',
+      confirmButtonColor: '#f59e0b', // amarillo
+      cancelButtonColor: '#6b7280' // gris
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       const res = await fetch(`http://localhost:3001/appointments/${id}`, {
-        method: 'PATCH', // Utilizamos PATCH para actualizar un solo campo
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'Cancelada' }), // Solo actualizamos el campo status
+        body: JSON.stringify({ status: 'Cancelada' }),
       });
 
       if (res.ok) {
-        alert('Cita cancelada exitosamente');
-        loadAppointments(); // Actualizar la tabla de citas
+        await Swal.fire({
+          icon: 'success',
+          title: 'Cita cancelada',
+          text: 'La cita fue cancelada exitosamente',
+          confirmButtonText: 'OK'
+        });
+        loadAppointments();
       } else {
-        alert('Error al cancelar la cita');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo cancelar la cita.'
+        });
       }
     } catch (error) {
       console.error('Error al cancelar la cita:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error inesperado.'
+      });
     }
   }
 });
@@ -470,14 +554,29 @@ editForm.addEventListener('submit', async (e) => {
     });
 
     if (res.ok) {
-      alert('Cita actualizada exitosamente');
+      await Swal.fire({
+        icon: 'success',
+        title: 'Cita actualizada',
+        text: 'Los cambios se guardaron correctamente',
+        confirmButtonText: 'OK'
+      });
+
       editForm.reset();
       document.getElementById('editModal').classList.add('hidden');
       loadAppointments(); // Recargar tabla
     } else {
-      alert('Error al actualizar la cita');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo actualizar la cita'
+      });
     }
   } catch (error) {
     console.error('Error al actualizar la cita:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error inesperado',
+      text: 'Hubo un problema al actualizar la cita'
+    });
   }
 });

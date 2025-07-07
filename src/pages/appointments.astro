@@ -163,6 +163,17 @@ const appointments = await res.json();
     <h3 class="font-semibold text-gray-800 dark:text-white">Lista de Citas</h3>
   </div>
 
+  <!-- Botón para exportar a PDF -->
+      <div class="flex justify-center max-w-6xl mx-auto mb-6">
+        <button
+          id="exportAppointmentsPDF"
+          class="btn-primary inline-flex items-center justify-center rounded-lg h-9 px-6 py-2 text-white font-semibold bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-red-500 dark:hover:bg-red-600"
+        >
+          Exportar PDF
+        </button>
+      </div>
+
+
   <!-- Contenedor de la tabla con un ancho máximo y centrado -->
   <div
     class="relative overflow-x-auto shadow-lg sm:rounded-lg mx-auto max-w-6xl mb-8"
@@ -478,4 +489,5 @@ const appointments = await res.json();
   <script type="module" src="/scripts/views/appointments.js"></script>
   <script src="/scripts/views/appointmentsDate.js" is:inline></script>
   <script src="/scripts/views/appointmentsFilter.js" is:inline></script>
+  <script type="module" src="../../src/scripts/views/exportAppointmentsPDF.js"></script>
 </Base>

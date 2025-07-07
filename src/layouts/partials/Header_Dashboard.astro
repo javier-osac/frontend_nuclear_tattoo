@@ -1,7 +1,8 @@
 ---
+// IMPORTACIONES
 import Logo from "@/components/core/Logo.astro";
 import ThemeToggle from "@/components/core/ThemeToggle.astro";
-import menu from "@/config/menu";
+import menu from "@/config/menu.json";
 
 export interface ChildNavigationLink {
   name: string;
@@ -21,16 +22,17 @@ const { pathname } = Astro.url;
 
 <header class="header">
   <nav class="navbar container">
-    <!-- logo -->
+    <!-- Logo -->
     <div class="order-0">
       <Logo />
     </div>
-    <!-- navbar toggler -->
+
+    <!-- Botón menú hamburguesa -->
     <input id="nav-toggle" type="checkbox" class="hidden" />
     <label
       id="show-button"
       for="nav-toggle"
-      class="order-2 flex cursor-pointer items-center lg:order-1 lg:hidden mr-6"
+      class="order-2 flex cursor-pointer items-center lg:order-1 lg:hidden mx-auto"
     >
       <svg class="h-6 fill-current" viewBox="0 0 20 20">
         <title>Menu Open</title>
@@ -40,7 +42,7 @@ const { pathname } = Astro.url;
     <label
       id="hide-button"
       for="nav-toggle"
-      class="order-2 hidden cursor-pointer items-center lg:order-1 mr-6"
+      class="order-2 hidden cursor-pointer items-center lg:order-1 mx-auto h-10 w-12"
     >
       <svg class="h-6 fill-current" viewBox="0 0 20 20">
         <title>Menu Close</title>
@@ -49,12 +51,12 @@ const { pathname } = Astro.url;
           transform="rotate(45 10 10)"></polygon>
       </svg>
     </label>
-    <!-- /navbar toggler -->
 
+    <!-- Navegación -->
     <ul
-      id="nav-menu"
-      class="navbar-nav order-3 hidden w-full lg:order-1 lg:flex lg:w-auto lg:space-x-2 "
-    >
+    id="nav-menu"
+    class="navbar-nav order-3 hidden w-full lg:order-1 lg:flex lg:w-auto lg:space-x-2 lg:ml-16"
+  >
       {
         dashboard.map((menu) => (
           <>
@@ -63,9 +65,7 @@ const { pathname } = Astro.url;
                 <span
                   class={`nav-link inline-flex items-center ${
                     menu.children?.map(({ url }) => url).includes(pathname) ||
-                    menu.children
-                      ?.map(({ url }) => `${url}/`)
-                      .includes(pathname)
+                    menu.children?.map(({ url }) => `${url}/`).includes(pathname)
                       ? "active"
                       : ""
                   }`}
@@ -75,18 +75,14 @@ const { pathname } = Astro.url;
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                   </svg>
                 </span>
-                <ul
-                  id="dropdown"
-                  class="nav-dropdown-list"
-                >
+                <ul class="nav-dropdown-list">
                   {menu.children?.map((child) => (
                     <li class="nav-dropdown-item">
                       <a
                         href={child.url}
+                        data-astro-reload
                         class={`nav-dropdown-link block ${
-                          (pathname === `${child.url}/` ||
-                            pathname === child.url) &&
-                          "text-secondary"
+                          (pathname === `${child.url}/` || pathname === child.url) && "text-secondary"
                         }`}
                       >
                         {child.name}
@@ -99,9 +95,9 @@ const { pathname } = Astro.url;
               <li class="nav-item">
                 <a
                   href={menu.url}
+                  data-astro-reload
                   class={`nav-link inline-block lg:block ${
-                    (pathname === `${menu.url}/` || pathname === menu.url) &&
-                    "active"
+                    (pathname === `${menu.url}/` || pathname === menu.url) && "active"
                   }`}
                 >
                   {menu.name}
@@ -111,28 +107,40 @@ const { pathname } = Astro.url;
           </>
         ))
       }
+
+      <!-- Móvil: Cerrar Sesión abajo -->
+      <li class="lg:hidden border-t mt-2 pt-2">
+        <button 
+          onclick="window.location.href='/login_register'" 
+          class="btn-danger block w-60 sm:w-56 md:w-64 rounded-lg h-9 flex items-center justify-center mx-auto text-sm sm:text-base"
+        >
+          Cerrar Sesión
+        </button>
+      </li>
     </ul>
-    <div class="order-1 ml-auto absolute right-3 top-3 items-center md:order-2 md:ml-0 lg:relative lg:right-0 lg:flex lg:top-0 gap-5">
+
+    <!-- Escritorio: Cerrar sesión y ThemeToggle -->
+    <div class="order-1 ml-auto flex items-center gap-3 absolute top-3 right-3 md:static md:top-auto md:right-auto lg:relative">
       <button 
         onclick="window.location.href='/login_register'" 
-        class="btn-danger block w-full rounded-lg h-9 flex items-center justify-center"
+        class="hidden lg:block btn-danger rounded-lg h-9 px-4 text-sm"
       >
         Cerrar Sesión
       </button>
+
       <ThemeToggle />
-    </div>    
-  </header>
-</nav>
+    </div>
+  </nav>
+</header>
 
 <script is:inline>
   function initDropdownListeners() {
     document.querySelectorAll(".dropdown-button").forEach((button) => {
       const dropdown = button.closest(".nav-dropdown");
       function toggleDropdown(e) {
-        e.stopPropagation(); // Evitar eventos innecesarios
+        e.stopPropagation();
         dropdown.classList.toggle("open");
 
-        // Cierra otros dropdowns abiertos
         document.querySelectorAll(".nav-dropdown").forEach((otherDropdown) => {
           if (otherDropdown !== dropdown) {
             otherDropdown.classList.remove("open");
@@ -143,7 +151,7 @@ const { pathname } = Astro.url;
       button.addEventListener("click", toggleDropdown);
     });
   }
-  // Asegura que los eventos se reasignen después de cada navegación
+
   document.addEventListener("astro:page-load", () => {
     initDropdownListeners();
   });

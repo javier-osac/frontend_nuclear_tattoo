@@ -65,7 +65,6 @@ const { contact_form_action } = config.params;
               class="btn-primary block w-full"
               type="submit"
               value="Enviar Mensaje"
-              onclick="alert('This form is not functional. Please use the email address provided in the footer to contact me.')"
             />
           </form>
           <br/>
@@ -99,4 +98,44 @@ const { contact_form_action } = config.params;
       </div>
     </div>
   </section>
+
+  <script type="module">
+    import Swal from '../../node_modules/sweetalert2';
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: formData,
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Mensaje enviado',
+            text: 'Gracias por contactarnos. Te responderemos pronto.',
+            confirmButtonText: 'OK'
+          });
+          form.reset();
+        } else {
+          throw new Error("Error al enviar el formulario");
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocurrió un error al enviar tu mensaje. Inténtalo más tarde.',
+        });
+        console.error(error);
+      }
+    });
+  });
+</script>
+
 </Base>

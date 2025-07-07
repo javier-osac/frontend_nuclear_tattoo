@@ -1,4 +1,5 @@
 import { getUserFromToken } from "../../../src/utils/auth.js";
+import Swal from '../../../node_modules/sweetalert2';
 
 const token = localStorage.getItem("token");
 const user = token ? getUserFromToken(token) : null;
@@ -6,36 +7,45 @@ const hasPermission = user && user.permissions.includes("see_comments");
 
 // Función para enviar una nueva opinión
 async function submitOpinion(event) {
-    event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+  event.preventDefault();
 
-    // Capturar datos del formulario
-    const form = event.target;
-    const formData = new FormData(form);
-    const opinion = {
-        name: formData.get("name"),
-        qualification: formData.get("rating"),
-        opinion_date: formData.get("visit_date"),
-        service: formData.get("service"),
-        description: formData.get("comment"),
-    };
+  const form = event.target;
+  const formData = new FormData(form);
+  const opinion = {
+    name: formData.get("name"),
+    qualification: formData.get("rating"),
+    opinion_date: formData.get("visit_date"),
+    service: formData.get("service"),
+    description: formData.get("comment"),
+  };
 
-    try {
-        const response = await fetch('http://localhost:3001/opinion', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(opinion),
-        });
+  try {
+    const response = await fetch('http://localhost:3001/opinion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(opinion),
+    });
 
-        if (!response.ok) {
-            throw new Error('Error al enviar la opinión');
-        }
-
-        // Limpiar el formulario y volver a cargar las opiniones
-        form.reset();
-        fetchOpinions();
-    } catch (error) {
-        console.error('Error:', error);
+    if (!response.ok) {
+      throw new Error('Error al enviar la opinión');
     }
+
+    await Swal.fire({
+      icon: 'success',
+      title: 'Opinión enviada',
+      text: 'Gracias por compartir tu experiencia',
+    });
+
+    form.reset();
+    fetchOpinions();
+  } catch (error) {
+    console.error('Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo enviar la opinión',
+    });
+  }
 }
 
 // Función para obtener opiniones desde la API
@@ -110,22 +120,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Función para eliminar una opinión
 async function deleteOpinion(id) {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta opinión?')) {
-        return; // Salir si el usuario cancela la acción
+  const result = await Swal.fire({
+    title: '¿Eliminar opinión?',
+    text: 'Esta acción no se puede deshacer',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const response = await fetch(`http://localhost:3001/opinion/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al eliminar la opinión');
     }
 
-    try {
-        const response = await fetch(`http://localhost:3001/opinion/${id}`, {
-            method: 'DELETE',
-        });
+    await Swal.fire({
+      icon: 'success',
+      title: 'Eliminada',
+      text: 'La opinión fue eliminada correctamente',
+    });
 
-        if (!response.ok) {
-            throw new Error('Error al eliminar la opinión');
-        }
-
-        // Recargar las opiniones después de eliminar
-        fetchOpinions();
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    fetchOpinions();
+  } catch (error) {
+    console.error('Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error inesperado',
+      text: 'No se pudo eliminar la opinión',
+    });
+  }
 }

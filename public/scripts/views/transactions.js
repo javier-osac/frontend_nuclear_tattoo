@@ -1,18 +1,42 @@
+import Swal from '../../../node_modules/sweetalert2';
+
 const API_URL = 'http://localhost:3001/transactions';
 
 document.querySelector('form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
+  e.preventDefault();
+  const formData = new FormData(e.target);
 
-    // Enviar datos al backend
-    await fetch(API_URL, {
-        method: 'POST',
-        body: formData, // Envía los datos como FormData
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: formData,
     });
-    fetchTransactions();
-    e.target.reset();
-});
 
+    if (res.ok) {
+      await Swal.fire({
+        icon: 'success',
+        title: 'Transacción registrada',
+        text: 'Se ha agregado correctamente',
+        confirmButtonText: 'OK',
+      });
+      fetchTransactions();
+      e.target.reset();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo registrar la transacción',
+      });
+    }
+  } catch (error) {
+    console.error("Error al enviar:", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error inesperado',
+      text: 'Ocurrió un problema al guardar',
+    });
+  }
+});
 
 // Fetch all transactions
 async function fetchTransactions() {
@@ -84,26 +108,83 @@ cancelEditBtn.addEventListener("click", () => {
 
 // Enviar los datos editados
 editForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  const formData = new FormData(editForm);
 
-    const formData = new FormData(editForm);
-
-    // Envía los datos como FormData (incluyendo archivo, si lo hay)
-    await fetch(`${API_URL}/${currentTransactionId}`, {
-        method: "PUT",
-        body: formData, // Enviar como FormData para admitir archivos
+  try {
+    const res = await fetch(`${API_URL}/${currentTransactionId}`, {
+      method: "PUT",
+      body: formData,
     });
 
-    // Oculta el modal y recarga las transacciones
-    editModal.classList.add("hidden");
-    fetchTransactions();
+    if (res.ok) {
+      await Swal.fire({
+        icon: 'success',
+        title: 'Actualizado',
+        text: 'La transacción fue actualizada correctamente',
+        confirmButtonText: 'OK',
+      });
+      editModal.classList.add("hidden");
+      editForm.reset();
+      fetchTransactions();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo actualizar la transacción',
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error inesperado',
+      text: 'Hubo un problema al actualizar',
+    });
+  }
 });
+
 
 // Delete a transaction
 window.deleteTransaction = async function (id) {
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    fetchTransactions();
+  const result = await Swal.fire({
+    title: '¿Eliminar transacción?',
+    text: 'Esta acción no se puede deshacer',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+
+      if (res.ok) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Eliminado',
+          text: 'La transacción fue eliminada correctamente',
+        });
+        fetchTransactions();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo eliminar la transacción',
+        });
+      }
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error inesperado',
+        text: 'Hubo un problema al eliminar la transacción',
+      });
+    }
+  }
 };
+
 
 // Render transactions in the table
 let balance = 0; // Variable global para el balance

@@ -1,3 +1,5 @@
+import Swal from '../../../node_modules/sweetalert2';
+
 // Variables globales
 let deleteMode = false;
 let currentIndex = 0;
@@ -127,16 +129,28 @@ function initAddImageModal() {
         });
         const result = await response.json();
         if (result.success) {
-          alert("Imagen subida correctamente");
+          await Swal.fire({
+            icon: 'success',
+            title: 'Imagen subida',
+            text: 'La imagen se subió correctamente.',
+          });
           mostrarImagenes();
           form.reset();
           addImageModal.classList.add("hidden");
         } else {
-          alert("Error al subir imagen");
+          await Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo subir la imagen.',
+          });
         }
       } catch (err) {
         console.error(err);
-        alert("Error del servidor");
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error del servidor',
+          text: 'Ocurrió un problema al comunicarse con el servidor.',
+        });
       }
     });
   }
@@ -227,11 +241,25 @@ function initDeleteMode() {
   // Confirmar eliminación de imágenes
   btnConfirmDelete.addEventListener("click", async () => {
     if (selectedImages.size === 0) {
-      alert("No has seleccionado imágenes para eliminar.");
+      await Swal.fire({
+        icon: 'info',
+        title: 'Sin selección',
+        text: 'No has seleccionado imágenes para eliminar.',
+      });
       return;
     }
 
-    if (!confirm(`¿Seguro que quieres eliminar ${selectedImages.size} imagen(es)?`)) return;
+    const result = await Swal.fire({
+      title: '¿Eliminar imágenes?',
+      text: `¿Seguro que quieres eliminar ${selectedImages.size} imagen(es)?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+
+    if (!result.isConfirmed) return;
+
 
     for (const id of selectedImages) {
       try {
@@ -245,7 +273,12 @@ function initDeleteMode() {
       }
     }
 
-    alert("Imágenes eliminadas correctamente");
+    await Swal.fire({
+      icon: 'success',
+      title: 'Eliminadas',
+      text: 'Las imágenes fueron eliminadas correctamente.',
+    });
+
     selectedImages.clear();
     deleteMode = false;
     btnConfirmDelete.style.display = "none";
